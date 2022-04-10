@@ -1,0 +1,68 @@
+import {
+  Grid,
+} from '@mui/material';
+import {
+  useState, React, useEffect, useContext,
+} from 'react';
+import { useHistory, useParams } from 'react-router-dom';
+import ParticipantInput from '../components/participant/ParticipantInput';
+import InsertParticipantsList from '../components/participant/InsertParticipantsList';
+import { getParticipant, getParticipants, addParticipant } from '../services/localStorageService';
+import GoBackContext from '../contexts/GoBackContext';
+import AlertDialog from '../components/utils/AlertDialog';
+
+export default function InsertParticipantPage() {
+  const { contest: contestId } = useParams();
+  const history = useHistory();
+  const [participants, setParticipants] = useState([]);
+  const [openAlert, setOpenAlert] = useState(false);
+  const { useGoBack } = useContext(GoBackContext);
+
+  const submit = (input) => {
+    if (input.length === 0) alert('Participant can\'t be empty');
+    else if (input.includes(',') || input.includes(':')) alert('participants cannot include a comma(,) or colon(:)');
+    else if (!getParticipant(contestId, input)) {
+      setParticipants([...participants, { id: `${input}`, name: `${input}` }]);
+    } else { alert('Participant already exists'); }
+  };
+  const save = () => {
+    if (participants && participants.length > 0) {
+      participants.forEach((p) => (addParticipant(contestId, p)));
+      history.goBack();
+    } else { alert('There are no new participants yet'); }
+  };
+
+  useEffect(() => {
+    useGoBack.setDisableBack(true);
+    return () => useGoBack.setDisableBack(false);
+  }, []);
+
+  return (
+    <Grid container className="InsertParticipants layout" justifyContent="center">
+      <AlertDialog
+        header="¿Seguro?"
+        text="Perderás los datos no guardados"
+        yesText="Salir"
+        noText="No salir"
+        onYes={() => history.goBack()}
+        open={openAlert}
+        setOpen={setOpenAlert}
+      />
+      <Grid item xs={12} md={6} key="newParticipant">
+        <ParticipantInput
+          submit={submit}
+          save={save}
+          disableSave={participants.length === 0}
+          alert={setOpenAlert}
+        />
+      </Grid>
+      <Grid item xs={12} md={6} key="participantsList">
+        <InsertParticipantsList
+          oldParticipants={getParticipants(contestId)}
+          participants={participants}
+          setParticipants={setParticipants}
+        />
+      </Grid>
+    </Grid>
+  );
+}
