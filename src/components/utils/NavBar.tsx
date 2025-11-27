@@ -9,8 +9,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 import { useHistory, useLocation } from 'react-router-dom';
-import Endpoints from '../../utils/endpoints';
-import {useColorModeContext} from '../../contexts/ColorModeContext';
+import { Endpoints } from '../../utils/endpoints';
+import { useColorModeContext } from '../../contexts/ColorModeContext';
 import AlertDialog from './AlertDialog';
 import { useGoBackContext } from '../../contexts/GoBackContext';
 
@@ -46,23 +46,23 @@ function NavBar({ pageName }: NavBarProps): React.ReactElement {
   };
 
   const theme = useTheme();
-  const { toggleColorMode } = useColorModeContext();
+  // const { toggleColorMode } = useColorModeContext(); // TODO: Dark mode with MUI v5 is not working properly
 
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ maxWidth: 'inherit' }}>
           {location?.pathname !== Endpoints.MENU() && !disableBack
-          && (
-          <IconButton
-            aria-label="back-button"
-            type="button"
-            onClick={onBackClick}
-            sx={{ color: 'inherit' }}
-          >
-            <ArrowBackIcon />
-          </IconButton>
-          )}
+            && (
+              <IconButton
+                aria-label="back-button"
+                type="button"
+                onClick={onBackClick}
+                sx={{ color: 'inherit' }}
+              >
+                <ArrowBackIcon />
+              </IconButton>
+            )}
           <Box className="FlexBox" />
           <Typography
             variant="h5"
@@ -83,11 +83,11 @@ function NavBar({ pageName }: NavBarProps): React.ReactElement {
             {' 🔸 '}
             {pageName}
           </Typography>
-          <Button onClick={toggleColorMode} style={{ color: 'white' }}>
+          {/* <Button onClick={toggleColorMode} style={{ color: 'white' }}>
             Theme:
             {' '}
             {theme.palette.mode}
-          </Button>
+          </Button> */}
           <Box className="FlexBox" />
         </Toolbar>
       </Container>

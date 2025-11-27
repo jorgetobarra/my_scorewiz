@@ -1,17 +1,25 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/no-array-index-key */
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import {
-  Card, CardContent, Grid, Button, Typography, CardActions, Fade, Slide, IconButton, Box,
-} from '@mui/material';
-import React, { useState } from 'react';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { Link, useParams } from 'react-router-dom';
-import Endpoints from '../../utils/endpoints';
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Grid,
+  IconButton,
+  Typography
+} from "@mui/material";
+import React, { useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import {
-  getParticipants, getVotes, removeParticipant, removeVotes,
-} from '../../services/localStorageService';
-import AlertDialog from '../utils/AlertDialog';
-import { Participant } from '../../types';
+  getParticipants,
+  getVotes,
+  removeParticipant,
+  removeVotes,
+} from "../../services/localStorageService";
+import { Participant } from "../../types";
+import { Endpoints } from "../../utils/endpoints";
+import AlertDialog from "../utils/AlertDialog";
 
 interface ParticipantCardProps {
   participant: Participant;
@@ -21,11 +29,15 @@ interface ParticipantCardProps {
 
 const styles = {
   button: {
-    marginLeft: '0.5rem',
+    marginLeft: "0.5rem",
   },
 };
 
-export default function ParticipantCard({ participant, setParticipants, index }: ParticipantCardProps) {
+export default function ParticipantCard({
+  participant,
+  setParticipants,
+  index,
+}: ParticipantCardProps) {
   const { contest: contestId } = useParams<any>();
   const [votes, setVotes] = useState(getVotes(contestId, participant.id));
   const [openVotesAlert, setVotesAlertOpen] = useState(false);
@@ -64,17 +76,41 @@ export default function ParticipantCard({ participant, setParticipants, index }:
         sm={6}
         md={4}
       >
-        <Card key={`card-${participant.name}-${index}`} style={{ margin: 8, marginLeft: 24, marginRight: 24 }}>
-          <CardContent sx={{ padding: '.5rem', textAlign: 'center' }}>
+        <Card
+          key={`card-${participant.name}-${index}`}
+          style={{ margin: 8, marginLeft: 24, marginRight: 24 }}
+        >
+          <CardContent sx={{ padding: ".5rem", textAlign: "center" }}>
             <Typography sx={{ fontWeight: 500 }}>{participant.name}</Typography>
           </CardContent>
           <CardActions>
-            <Link to={Endpoints.PARTICIPANT_VOTING(contestId, participant.id)} className="NoLink">
-              <Button key="voteButton" size="small" style={styles.button}>{!votes ? 'Vote' : 'Edit votes'}</Button>
+            <Link
+              to={Endpoints.PARTICIPANT_VOTING(contestId, participant.id)}
+              className="NoLink"
+            >
+              <Button key="voteButton" size="small" style={styles.button}>
+                {!votes ? "Vote" : "Edit votes"}
+              </Button>
             </Link>
-            {votes && <Button key="deleteVotesButton" size="small" color="error" onClick={() => setVotesAlertOpen(true)} style={styles.button}>Remove votes</Button>}
+            {votes && (
+              <Button
+                key="deleteVotesButton"
+                size="small"
+                color="error"
+                onClick={() => setVotesAlertOpen(true)}
+                style={styles.button}
+              >
+                Remove votes
+              </Button>
+            )}
             <Box className="FlexBox" />
-            <IconButton key={`deleteParticipant-${participant.name}`} color="error" onClick={() => setParticipantAlertOpen(true)}><DeleteOutlineIcon /></IconButton>
+            <IconButton
+              key={`deleteParticipant-${participant.name}`}
+              color="error"
+              onClick={() => setParticipantAlertOpen(true)}
+            >
+              <DeleteOutlineIcon />
+            </IconButton>
           </CardActions>
         </Card>
       </Grid>

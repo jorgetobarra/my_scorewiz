@@ -1,16 +1,19 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/no-array-index-key */
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import {
-  Card, CardContent, Grid, Button, Typography, CardActions, CardActionArea, IconButton,
-} from '@mui/material';
-import React, { useState } from 'react';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { Link, useHistory } from 'react-router-dom';
-import { randomizeArray } from '../../services/randomService';
-import { getContest, getContests, removeContest } from '../../services/localStorageService';
-import Endpoints from '../../utils/endpoints';
-import AlertDialog from '../utils/AlertDialog';
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  Grid,
+  IconButton,
+  Typography,
+} from "@mui/material";
+import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { getContests, removeContest } from "../../services/localStorageService";
+import { Endpoints } from "../../utils/endpoints";
+import AlertDialog from "../utils/AlertDialog";
 
 interface ContestCardProps {
   contest: string;
@@ -18,10 +21,17 @@ interface ContestCardProps {
   setContests: (contests: string[]) => void;
 }
 
-export default function ContestCard({ contest: contestId, index, setContests }: ContestCardProps) {
+export default function ContestCard({
+  contest: contestId,
+  index,
+  setContests,
+}: ContestCardProps) {
   const history = useHistory();
   const [openAlert, setAlertOpen] = useState(false);
-  const onDelete = () => { removeContest(contestId); setContests(getContests()); };
+  const onDelete = () => {
+    removeContest(contestId);
+    setContests(getContests());
+  };
   return (
     <>
       <AlertDialog
@@ -40,16 +50,30 @@ export default function ContestCard({ contest: contestId, index, setContests }: 
         sm={6}
         md={4}
       >
-        <Card key={`card-${contestId}-${index}`} style={{ margin: 8, marginLeft: 24, marginRight: 24 }}>
-          <CardActionArea onClick={() => history.push(Endpoints.CONTEST(contestId))}>
-            <CardContent sx={{ padding: '1rem', textAlign: 'center' }}>
+        <Card
+          key={`card-${contestId}-${index}`}
+          style={{ margin: 8, marginLeft: 24, marginRight: 24 }}
+        >
+          <CardActionArea
+            onClick={() => history.push(Endpoints.CONTEST(contestId))}
+          >
+            <CardContent sx={{ padding: "1rem", textAlign: "center" }}>
               <Typography variant="h6">{contestId}</Typography>
             </CardContent>
           </CardActionArea>
-          <CardActions sx={{ justifyContent: 'space-between' }}>
-            <IconButton id={`delete:${contestId}`} size="small" color="error" onClick={() => setAlertOpen(true)}><DeleteOutlineIcon /></IconButton>
+          <CardActions sx={{ justifyContent: "space-between" }}>
+            <IconButton
+              id={`delete:${contestId}`}
+              size="small"
+              color="error"
+              onClick={() => setAlertOpen(true)}
+            >
+              <DeleteOutlineIcon />
+            </IconButton>
             <Link to={Endpoints.CONTEST(contestId)} className="NoLink">
-              <IconButton id={`vote:${contestId}`} size="small"><ArrowForwardIcon /></IconButton>
+              <IconButton id={`vote:${contestId}`} size="small">
+                <ArrowForwardIcon />
+              </IconButton>
             </Link>
           </CardActions>
         </Card>

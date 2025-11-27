@@ -7,18 +7,18 @@ import InsertParticipantPage from '../pages/InsertParticipantPage';
 import MenuPage from '../pages/MenuPage';
 import ResultsPage from '../pages/ResultsPage';
 import VotingPage from '../pages/VotingPage';
-import Endpoints from './endpoints';
+import {ROUTES} from './endpoints';
 import { Route } from '../types';
 
 const routes: Route[] = [
-  { path: Endpoints.MENU(), name: 'Menu', component: <MenuPage /> },
-  { path: Endpoints.CONTESTS(), name: 'Contests', component: <ContestsList /> },
-  { path: Endpoints.NEW_CONTEST(), name: 'New contest', component: <InsertContestPage /> },
-  { path: Endpoints.CONTEST(), name: 'Contest', component: <ContestPage /> },
-  { path: Endpoints.NEW_PARTICIPANT(), name: 'New Participant', component: <InsertParticipantPage /> },
-  { path: Endpoints.PARTICIPANT_VOTING(), name: 'Participant voting', component: <VotingPage /> },
-  { path: Endpoints.RESULTS(), name: 'Results', component: <ResultsPage /> },
-  { path: Endpoints.DETAILED_RESULTS(), name: 'Detailed results', component: <DetailedResultsPage /> },
+  { path: ROUTES.MENU, name: 'Menu', component: <MenuPage /> },
+  { path: ROUTES.CONTESTS, name: 'Contests', component: <ContestsList /> },
+  { path: ROUTES.NEW_CONTEST, name: 'New contest', component: <InsertContestPage /> },
+  { path: ROUTES.CONTEST, name: 'Contest', component: <ContestPage /> },
+  { path: ROUTES.NEW_PARTICIPANT, name: 'New Participant', component: <InsertParticipantPage /> },
+  { path: ROUTES.PARTICIPANT_VOTING, name: 'Participant voting', component: <VotingPage /> },
+  { path: ROUTES.RESULTS, name: 'Results', component: <ResultsPage /> },
+  { path: ROUTES.DETAILED_RESULTS, name: 'Detailed results', component: <DetailedResultsPage /> },
 ];
 
 export default routes;

@@ -1,15 +1,7 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/no-array-index-key */
-import {
-  Card, CardContent, Grid, Button, Typography, CardActions, Fade,
-} from '@mui/material';
-import React, { useState, forwardRef } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import Box from '@mui/material/Box';
-import { randomizeArray } from '../../services/randomService';
-import { Participant } from '../../types';
+import { Card, CardContent, Fade, Grid } from "@mui/material";
+import React from "react";
+import { useParams } from "react-router-dom";
+import { Participant } from "../../types";
 
 interface CurrentResultsCardProps {
   participant: Participant;
@@ -18,11 +10,11 @@ interface CurrentResultsCardProps {
 
 const styles = {
   grid: {
-    padding: '1rem',
+    padding: "1rem",
   },
   nameGrid: {
     margin: 0,
-    textAlign: 'center',
+    textAlign: "center",
   },
   nameCard: {
     margin: 8,
@@ -31,18 +23,21 @@ const styles = {
   },
   nameCardContent: {
     padding: 8,
-    fontSize: '3rem',
+    fontSize: "3rem",
     fontWeight: 500,
   },
   otherCardContent: {
     padding: 8,
-    fontSize: '2rem',
-    textAlign: 'center',
+    fontSize: "2rem",
+    textAlign: "center",
   },
 };
 
 // TODO: these are crazy, they don't respond properly to CSS
-export default function CurrentResultsCard({ participant, stage }: CurrentResultsCardProps) {
+export default function CurrentResultsCard({
+  participant,
+  stage,
+}: CurrentResultsCardProps) {
   const { contest } = useParams<{ contest: string }>();
   return (
     <Grid
@@ -60,7 +55,11 @@ export default function CurrentResultsCard({ participant, stage }: CurrentResult
           sx={styles.nameGrid}
           xs={12}
         >
-          <Card key={`card-${participant.name}-name`} style={styles.nameCard} elevation={6}>
+          <Card
+            key={`card-${participant.name}-name`}
+            style={styles.nameCard}
+            elevation={6}
+          >
             <CardContent style={styles.nameCardContent}>
               {participant.name}
             </CardContent>
@@ -74,10 +73,13 @@ export default function CurrentResultsCard({ participant, stage }: CurrentResult
           style={{ margin: 0 }}
           xs={4}
         >
-          <Card key={`card-${participant.name}-place`} style={{ margin: 8, marginLeft: 8, marginRight: 4 }} elevation={4}>
+          <Card
+            key={`card-${participant.name}-place`}
+            style={{ margin: 8, marginLeft: 8, marginRight: 4 }}
+            elevation={4}
+          >
             <CardContent sx={styles.otherCardContent}>
-              {participant.place}
-              º
+              {participant.place}º
             </CardContent>
           </Card>
         </Grid>
@@ -89,11 +91,13 @@ export default function CurrentResultsCard({ participant, stage }: CurrentResult
           style={{ margin: 0 }}
           xs={8}
         >
-          <Card key={`card-${participant.name}-points`} style={{ margin: 8, marginLeft: 4, marginRight: 8 }} elevation={4}>
+          <Card
+            key={`card-${participant.name}-points`}
+            style={{ margin: 8, marginLeft: 4, marginRight: 8 }}
+            elevation={4}
+          >
             <CardContent sx={styles.otherCardContent}>
-              {participant.points}
-              {' '}
-              puntos
+              {participant.points} puntos
             </CardContent>
           </Card>
         </Grid>

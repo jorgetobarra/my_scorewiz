@@ -1,72 +1,72 @@
-/* eslint-disable prefer-const */
-/* eslint-disable no-plusplus */
-/* eslint-disable no-unused-vars */
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import SkipNextIcon from '@mui/icons-material/SkipNext';
-import {
-  Box,
-  Button,
-  Divider,
-  Fade,
-  Grid, Typography,
-} from '@mui/material';
-import {
-  useState, React, useCallback, useEffect, useContext,
-} from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { TransitionGroup } from 'react-transition-group';
-import { makeStyles } from '@mui/styles';
-import CurrentResultsCard from '../components/results/CurrentResultsCard';
-import Header from '../components/utils/Header';
-import ResultsCard from '../components/results/ResultsCard';
-import { getContest } from '../services/localStorageService';
-import Endpoints from '../utils/endpoints';
-import useWindowDimensions from '../utils/useWindowDimensions';
-import { useSnackbarContext } from '../contexts/SnackbarContext';
-import { Contest } from '../types/index';
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import SkipNextIcon from "@mui/icons-material/SkipNext";
+import { Box, Button, Fade, Grid } from "@mui/material";
+import React, { useCallback, useEffect, useState } from "react";
+import { Link, useParams, useHistory } from "react-router-dom";
+import { TransitionGroup } from "react-transition-group";
+import CurrentResultsCard from "../components/results/CurrentResultsCard";
+import ResultsCard from "../components/results/ResultsCard";
+import Header from "../components/utils/Header";
+import { useSnackbarContext } from "../contexts/SnackbarContext";
+import { getContest } from "../services/localStorageService";
+import Confetti from "react-canvas-confetti";
+import { Contest, Participant } from "../types/index";
+import { Endpoints } from "../utils/endpoints";
+import useWindowDimensions from "../utils/useWindowDimensions";
 
-const MAX_WIDTH = 1024;
+const MAX_WIDTH = "1024px";
 
 let styles = {
-  grid: {
-    // maxWidth: MAX_WIDTH,
-  },
+  grid: {},
   resultsControls: {
-    display: 'flex',
-    marginLeft: '1rem',
-    marginRight: '1rem',
+    display: "flex",
+    marginLeft: "1rem",
+    marginRight: "1rem",
   },
   button: {
-    margin: '.2rem',
+    margin: ".2rem",
   },
 };
 
 export default function ResultsPage() {
   const { contest: contestId } = useParams<{ contest: string }>();
-  const [contest] = useState<Contest>(getContest(contestId));
-  const [pastResults, setPastResults] = useState([]);
+  const [contest] = useState<Contest | null>(getContest(contestId));
+  const [pastResults, setPastResults] = useState<Participant[]>([]);
   const [mainResultStage, setMainResultStage] = useState(0);
   const [counter, setCounter] = useState(1);
   const [fullScreen, setFullScreen] = useState(false);
-  const [maxWidth, setMaxWidth] = useState(MAX_WIDTH);
+  const [maxWidth, setMaxWidth] = useState<string>(MAX_WIDTH);
   const { openSnackbar } = useSnackbarContext();
+  const history = useHistory();
 
-  const hasNextParticipant = () => (counter <= contest.participants.length);
-  const hasPreviousParticipant = () => (counter > 1);
-  const getNextParticipant = () => ((hasNextParticipant() && counter > 0)
-    ? contest.participants[contest.participants.length - counter]
-    : {});
+  if (!contest?.participants?.length) {
+    history.goBack();
+    return <></>;
+  }
+
+  const participants = contest.participants;
+
+  const hasNextParticipant = () => counter <= participants.length;
+  const hasPreviousParticipant = () => counter > 1;
+  const getNextParticipant = () =>
+    hasNextParticipant() && counter > 0
+      ? participants[participants.length - counter]
+      : ({} as Participant);
   const clickPrevious = () => {
     if (hasPreviousParticipant()) {
       setMainResultStage((prev) => prev - 1);
       if (mainResultStage === 0) {
-        setPastResults(() => { const temp = [...pastResults]; temp.shift(); return temp; });
+        setPastResults(() => {
+          const temp = [...pastResults];
+          temp.shift();
+          return temp;
+        });
         setCounter((prev) => prev - 1);
         setMainResultStage(2);
       }
     } else {
-      openSnackbar('Not fewer results');
+      openSnackbar("Not fewer results");
     }
   };
   const clickNext = () => {
@@ -78,58 +78,98 @@ export default function ResultsPage() {
         setMainResultStage(0);
       }
     } else {
-      openSnackbar('Not more results');
+      openSnackbar("No more results");
     }
   };
   const clickEnd = () => {
-    setPastResults(contest.participants);
-    setCounter(contest.participants.length + 1);
+    setPastResults(participants);
+    setCounter(participants.length + 1);
     setMainResultStage(0);
   };
   // TODO: hacer anuncio del top2 diferente
-  const keydownFunction = useCallback((event) => {
-    if (event.keyCode === 32) {
-      clickNext();
-    }
-    if (event.keyCode === 27) {
-      clickEnd();
-    }
-  }, [counter, contest, mainResultStage]);
+  const keydownFunction = useCallback(
+    (event) => {
+      if (event.keyCode === 32) {
+        clickNext();
+      }
+      if (event.keyCode === 27) {
+        clickEnd();
+      }
+    },
+    [counter, contest, mainResultStage]
+  );
 
   useEffect(() => {
-    document.addEventListener('keydown', keydownFunction);
+    document.addEventListener("keydown", keydownFunction);
 
     return () => {
-      document.removeEventListener('keydown', keydownFunction);
+      document.removeEventListener("keydown", keydownFunction);
     };
   }, [keydownFunction]);
 
   useEffect(() => {
-    if (fullScreen) setMaxWidth('100%');
+    if (fullScreen) setMaxWidth("100%");
     if (!fullScreen) setMaxWidth(MAX_WIDTH);
   }, [fullScreen]);
 
   return (
-    <Grid container className="ResultsPage layout" justifyContent="center" style={{ maxWidth }}>
+    <Grid
+      container
+      className="ResultsPage layout"
+      justifyContent="center"
+      sx={{ maxWidth }}
+    >
       <Grid item xs={12} key="resultsHeader">
         {fullScreen || <Header text={`Results of ${contestId}`} />}
       </Grid>
-      <Grid item xs={12} key="resultsControls" justifyContent="left" sx={styles.resultsControls}>
-        <Button variant="contained" startIcon={<ArrowBackIosNewIcon />} onClick={clickPrevious} disabled={!hasPreviousParticipant()} sx={styles.button}>
+      <Grid
+        item
+        xs={12}
+        key="resultsControls"
+        justifyContent="left"
+        sx={styles.resultsControls}
+      >
+        <Button
+          variant="contained"
+          startIcon={<ArrowBackIosNewIcon />}
+          onClick={clickPrevious}
+          disabled={!hasPreviousParticipant()}
+          sx={styles.button}
+        >
           Previous
         </Button>
-        <Button variant="contained" endIcon={<NavigateNextIcon />} onClick={clickNext} disabled={!hasNextParticipant()} sx={styles.button}>
+        <Button
+          variant="contained"
+          endIcon={<NavigateNextIcon />}
+          onClick={clickNext}
+          disabled={!hasNextParticipant()}
+          sx={styles.button}
+        >
           Next
         </Button>
-        <Button variant="contained" endIcon={<SkipNextIcon />} onClick={clickEnd} disabled={!hasNextParticipant()} sx={styles.button}>
+        <Button
+          variant="contained"
+          endIcon={<SkipNextIcon />}
+          onClick={clickEnd}
+          disabled={!hasNextParticipant()}
+          sx={styles.button}
+        >
           End
         </Button>
         <Box className="FlexBox" />
-        <Button variant="contained" sx={styles.button} onClick={() => setFullScreen(!fullScreen)}>
+        <Button
+          variant="contained"
+          sx={styles.button}
+          onClick={() => setFullScreen(!fullScreen)}
+        >
           Full screen
         </Button>
         <Link to={Endpoints.DETAILED_RESULTS(contestId)} className="NoLink">
-          <Button variant="contained" disabled={hasNextParticipant()} sx={styles.button}>
+          <Button
+            variant="contained"
+            disabled={hasNextParticipant()}
+            sx={styles.button}
+          >
             See details
           </Button>
         </Link>
@@ -139,20 +179,48 @@ export default function ResultsPage() {
         xs
         key="resultsGrid"
         style={{
-          marginTop: '1rem',
-          alignItems: fullScreen ? 'center' : 'top',
+          marginTop: "1rem",
+          alignItems: fullScreen ? "center" : "top",
         }}
       >
         <Box sx={{ height: useWindowDimensions().height / 12 }} />
-        <CurrentResultsCard
-          participant={getNextParticipant()}
-          stage={mainResultStage}
-        />
+        {hasNextParticipant() && (
+          <CurrentResultsCard
+            participant={getNextParticipant()}
+            stage={mainResultStage}
+          />
+        )}
+        {!hasPreviousParticipant() && mainResultStage === 0 && (
+          <Button variant="contained" size="large" onClick={() => clickNext()}>
+            Start
+          </Button>
+        )}
+        {!hasNextParticipant() && hasPreviousParticipant() && (
+          <>
+          {/* TODO: do this properly, this is just an idea */}
+            <Confetti
+              onInit={({ confetti }) => {
+                confetti({
+                  particleCount: 800,
+                  spread: 500,
+                  origin: { y: 0.3 },
+                });
+              }}
+              style={{ position: "fixed", width: "100vw", height: "100vh" }}
+            />
+            <p>congrats!</p>
+          </>
+        )}
         <Box sx={{ height: useWindowDimensions().height / 12 }} />
         {/* <Divider /> */}
         <TransitionGroup className="ParticipantsList" key="ParticipantsList">
           {pastResults.map((participant) => (
-            <Fade timeout={1000} mountOnEnter unmountOnExit key={participant.id}>
+            <Fade
+              timeout={1000}
+              mountOnEnter
+              unmountOnExit
+              key={participant.id}
+            >
               <ResultsCard participant={participant} />
             </Fade>
           ))}

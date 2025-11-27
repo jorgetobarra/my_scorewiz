@@ -1,35 +1,41 @@
+import { Grid } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
+import InsertParticipantsList from "../components/participant/InsertParticipantsList";
+import ParticipantInput from "../components/participant/ParticipantInput";
+import AlertDialog from "../components/utils/AlertDialog";
+import { useGoBackContext } from "../contexts/GoBackContext";
+import { Participant } from '../types/index';
 import {
-  Grid,
-} from '@mui/material';
-import {
-  useState, React, useEffect, useContext,
-} from 'react';
-import { useHistory, useParams } from 'react-router-dom';
-import ParticipantInput from '../components/participant/ParticipantInput';
-import InsertParticipantsList from '../components/participant/InsertParticipantsList';
-import { getParticipant, getParticipants, addParticipant } from '../services/localStorageService';
-import AlertDialog from '../components/utils/AlertDialog';
-import { useGoBackContext } from '../contexts/GoBackContext';
+  addParticipant,
+  getParticipant,
+  getParticipants,
+} from "../services/localStorageService";
 
 export default function InsertParticipantPage() {
-  const { contest: contestId } = useParams();
+  const { contest: contestId }: { contest: string } = useParams();
   const history = useHistory();
-  const [participants, setParticipants] = useState([]);
+  const [participants, setParticipants] = useState<Participant[]>([]);
   const [openAlert, setOpenAlert] = useState(false);
   const { setDisableBack } = useGoBackContext();
 
-  const submit = (input) => {
-    if (input.length === 0) alert('Participant can\'t be empty');
-    else if (input.includes(',') || input.includes(':')) alert('participants cannot include a comma(,) or colon(:)');
+  const submit = (input: string) => {
+    if (input.length === 0) alert("Participant can't be empty");
+    else if (input.includes(",") || input.includes(":"))
+      alert("participants cannot include a comma(,) or colon(:)");
     else if (!getParticipant(contestId, input)) {
       setParticipants([...participants, { id: `${input}`, name: `${input}` }]);
-    } else { alert('Participant already exists'); }
+    } else {
+      alert("Participant already exists");
+    }
   };
   const save = () => {
     if (participants && participants.length > 0) {
-      participants.forEach((p) => (addParticipant(contestId, p)));
+      participants.forEach((p) => addParticipant(contestId, p));
       history.goBack();
-    } else { alert('There are no new participants yet'); }
+    } else {
+      alert("There are no new participants yet");
+    }
   };
 
   useEffect(() => {
@@ -38,7 +44,11 @@ export default function InsertParticipantPage() {
   }, []);
 
   return (
-    <Grid container className="InsertParticipants layout" justifyContent="center">
+    <Grid
+      container
+      className="InsertParticipants layout"
+      justifyContent="center"
+    >
       <AlertDialog
         header="¿Seguro?"
         text="Perderás los datos no guardados"

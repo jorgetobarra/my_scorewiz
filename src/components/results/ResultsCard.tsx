@@ -1,30 +1,31 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/no-array-index-key */
-import {
-  Card, CardContent, Grid, Button, Typography, CardActions,
-} from '@mui/material';
-import React, { useState, forwardRef } from 'react';
-import PropTypes from 'prop-types';
-import { Link, useParams } from 'react-router-dom';
-import { randomizeArray } from '../../services/randomService';
+import { Card, CardContent, Grid } from "@mui/material";
+import React, { forwardRef } from "react";
+import { useParams } from "react-router-dom";
+import { Participant } from '../../types/index';
 
-function ResultsCard(props, ref) {
-  const { contest } = useParams();
-  const { participant } = props;
-  const getPlaceColor = (place) => {
-    switch (place) {
-      case 1: return 'gold';
-      case 2: return 'lightgrey';
-      default: return '';
-    }
-  };
-  const getLipsynchersColor = (place) => {
+interface ResultsCardProps {
+  participant: Participant;
+}
+
+function ResultsCard({ participant, ...props }: ResultsCardProps, ref: React.Ref<HTMLDivElement>) {
+  const { contest: contestId }: { contest: string } = useParams();
+  const getPlaceColor = (place?: number): string => {
     switch (place) {
       case 1:
-      case 2: return '#ffe';
-      default: return '';
+        return "gold";
+      case 2:
+        return "lightgrey";
+      default:
+        return "";
+    }
+  };
+  const getLipsynchersColor = (place?: number): string => {
+    switch (place) {
+      case 1:
+      case 2:
+        return "#ffe";
+      default:
+        return "";
     }
   };
   return (
@@ -52,7 +53,9 @@ function ResultsCard(props, ref) {
             backgroundColor: getPlaceColor(participant.place),
           }}
         >
-          <CardContent style={{ padding: 8, textAlign: 'center', fontSize: '1.2rem' }}>
+          <CardContent
+            style={{ padding: 8, textAlign: "center", fontSize: "1.2rem" }}
+          >
             {`${participant.place}º`}
           </CardContent>
         </Card>
@@ -72,7 +75,9 @@ function ResultsCard(props, ref) {
             backgroundColor: getLipsynchersColor(participant.place),
           }}
         >
-          <CardContent style={{ padding: 8, textAlign: 'center', fontSize: '1.2rem' }}>
+          <CardContent
+            style={{ padding: 8, textAlign: "center", fontSize: "1.2rem" }}
+          >
             {`${participant.points} points`}
           </CardContent>
         </Card>
@@ -92,7 +97,9 @@ function ResultsCard(props, ref) {
             backgroundColor: getLipsynchersColor(participant.place),
           }}
         >
-          <CardContent style={{ padding: 8, paddingLeft: '1rem', fontSize: '1.2rem' }}>
+          <CardContent
+            style={{ padding: 8, paddingLeft: "1rem", fontSize: "1.2rem" }}
+          >
             {participant.name}
           </CardContent>
         </Card>
@@ -100,8 +107,5 @@ function ResultsCard(props, ref) {
     </Grid>
   );
 }
-// ResultsCard.propTypes = {
-//   // eslint-disable-next-line react/forbid-prop-types
-//   participant: PropTypes.object.isRequired,
-// };
+
 export default forwardRef(ResultsCard);

@@ -1,13 +1,11 @@
-/* eslint-disable no-plusplus */
-/* eslint-disable class-methods-use-this */
-import * as XLSX from 'sheetjs-style';
-import { mapGridToWorkbook } from './helpers';
+import * as XLSX from "sheetjs-style";
+import { mapGridToWorkbook } from "./helpers";
 
 export default class XlsService {
   rowIsFirst(rowKey: string, length: number): boolean {
     let isFirst = false;
     for (let numbers = 1; numbers <= length; numbers++) {
-      if (rowKey.match(/\d+/)?.[0] === '1') isFirst = true;
+      if (rowKey.match(/\d+/)?.[0] === "1") isFirst = true;
     }
     return isFirst;
   }
@@ -15,38 +13,40 @@ export default class XlsService {
   rowIsOdd(rowKey: string, length: number): boolean {
     let isOdd = true;
     for (let numbers = 1; numbers <= length; numbers++) {
-      if (rowKey.match(/\d+/)?.[0] === `${numbers}` && numbers % 2 === 0) isOdd = false;
+      if (rowKey.match(/\d+/)?.[0] === `${numbers}` && numbers % 2 === 0)
+        isOdd = false;
     }
     return isOdd;
   }
 
   exportResultsXls(resultsGrid: any[][], contestId: string): void {
     /* generate worksheet and workbook */
-    const worksheet = XLSX.utils
-      .json_to_sheet(mapGridToWorkbook(resultsGrid), { cellStyles: true });
+    const worksheet = XLSX.utils.json_to_sheet(mapGridToWorkbook(resultsGrid), {
+      cellStyles: true,
+    });
     const workbook = XLSX.utils.book_new();
 
     // const worksheet = XLSX.utils.aoa_to_sheet([row]);
     Object.keys(worksheet).forEach((key) => {
-      if (!key.includes('!') && this.rowIsOdd(key, resultsGrid[0].length)) {
+      if (!key.includes("!") && this.rowIsOdd(key, resultsGrid[0].length)) {
         worksheet[key].s = {
           fill: {
-            fgColor: { rgb: 'ECECEC' },
+            fgColor: { rgb: "ECECEC" },
           },
         };
       }
-      if (!key.includes('!') && this.rowIsFirst(key, resultsGrid[0].length)) {
+      if (!key.includes("!") && this.rowIsFirst(key, resultsGrid[0].length)) {
         worksheet[key].s = {
           fill: {
-            fgColor: { rgb: 'D0D0D0' },
+            fgColor: { rgb: "D0D0D0" },
           },
         };
       }
-      if (worksheet[key]?.v === '-') {
-        worksheet[key].v = '';
+      if (worksheet[key]?.v === "-") {
+        worksheet[key].v = "";
         worksheet[key].s = {
           fill: {
-            fgColor: { rgb: '777777' },
+            fgColor: { rgb: "777777" },
           },
         };
       }

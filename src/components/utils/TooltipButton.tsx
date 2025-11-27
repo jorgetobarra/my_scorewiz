@@ -1,11 +1,6 @@
-/* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable no-nested-ternary */
-import {
-  Button,
-  Tooltip,
-} from '@mui/material';
-import { Link } from 'react-router-dom';
-import React from 'react';
+import { Button, Tooltip } from "@mui/material";
+import { Link } from "react-router-dom";
+import React from "react";
 
 interface TooltipButtonProps {
   text: string;
@@ -23,28 +18,26 @@ export default function TooltipButton({
   onClick = () => {},
   ...props
 }: TooltipButtonProps & React.ComponentProps<typeof Button>) {
-  return (
-    isDisabled
-      ? (
-        <Tooltip title={tooltipText}>
-          {/* <Button variant="contained" style={{ background: 'lightgrey' }}> */}
-          <Button {...props} variant="outlined" style={{ color: 'lightgrey', borderColor: 'lightgrey' }}>
-            {text}
-          </Button>
-        </Tooltip>
-      )
-      : link
-        ? (
-          <Link to={link} className="NoLink">
-            <Button {...props} variant="contained">
-              {text}
-            </Button>
-          </Link>
-        )
-        : (
-          <Button {...props} variant="contained" onClick={onClick}>
-            {text}
-          </Button>
-        )
+  return isDisabled ? (
+    <Tooltip title={tooltipText}>
+      {/* <Button variant="contained" style={{ background: 'lightgrey' }}> */}
+      <Button
+        {...props}
+        variant="outlined"
+        style={{ color: "lightgrey", borderColor: "lightgrey" }}
+      >
+        {text}
+      </Button>
+    </Tooltip>
+  ) : link ? (
+    <Link to={link} className="NoLink">
+      <Button {...props} variant="contained">
+        {text}
+      </Button>
+    </Link>
+  ) : (
+    <Button {...props} variant="contained" onClick={onClick}>
+      {text}
+    </Button>
   );
 }

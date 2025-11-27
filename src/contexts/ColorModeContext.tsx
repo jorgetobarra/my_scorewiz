@@ -1,4 +1,5 @@
 import React from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { DARK_THEME, LIGHT_THEME } from '../utils/constants';
 
 interface ColorModeContextType {
@@ -9,9 +10,9 @@ interface ColorModeContextType {
 export const ColorModeContext = React.createContext<ColorModeContextType | undefined>(undefined);
 
 export function ColorModeContextProvider({ children }: React.PropsWithChildren<{}>) {
-  const [mode, setMode] = React.useState<string>(LIGHT_THEME);
+  const systemValue = useMediaQuery('(prefers-color-scheme: dark)') ? DARK_THEME : LIGHT_THEME;
+  const [mode, setMode] = React.useState<string>(systemValue);
   const toggleColorMode = () => {
-    console.log(mode);
     setMode((prevMode) => (prevMode === LIGHT_THEME ? DARK_THEME : LIGHT_THEME));
   };
 

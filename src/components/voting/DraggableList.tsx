@@ -1,20 +1,16 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable react/forbid-prop-types */
-import * as React from 'react';
-import {
-  DragDropContext,
-  Droppable,
-  DropResult,
-  DraggableLocation,
-} from 'react-beautiful-dnd';
-import DraggableListItem from './DraggableListItem';
-import { reorder } from '../../services/helpers';
+import * as React from "react";
+import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
+import { reorder } from "../../services/helpers";
+import DraggableListItem from "./DraggableListItem";
 
 interface DraggableListProps {
   items: any[];
   setItems: (items: any[]) => void;
-  onDragEnd?: (result: DropResult, items: any[], setItems: (items: any[]) => void) => void;
+  onDragEnd?: (
+    result: DropResult,
+    items: any[],
+    setItems: (items: any[]) => void
+  ) => void;
 }
 
 const onDragEndDefault = (
@@ -31,20 +27,24 @@ const onDragEndDefault = (
   setItems(newItems);
 };
 
-const DraggableList = React.memo(({ items, setItems, onDragEnd = onDragEndDefault }: DraggableListProps) => (
-  // <DragDropContext>
-  <DragDropContext onDragEnd={(result) => onDragEnd(result, items, setItems)}>
-    <Droppable droppableId="droppable-list">
-      {(provided, snapshot) => (
-        <div ref={provided.innerRef} {...provided.droppableProps}>
-          {items.map((item, index) => (
-            <DraggableListItem item={item} index={index} key={item.id} />
-          ))}
-          {provided.placeholder}
-        </div>
-      )}
-    </Droppable>
-  </DragDropContext>
-));
+const DraggableList = React.memo(
+  ({ items, setItems, onDragEnd = onDragEndDefault }: DraggableListProps) => (
+    // <DragDropContext>
+    <DragDropContext onDragEnd={(result) => onDragEnd(result, items, setItems)}>
+      <Droppable droppableId="droppable-list">
+        {(provided, snapshot) => (
+          <div ref={provided.innerRef} {...provided.droppableProps}>
+            {items.map((item, index) => (
+              <DraggableListItem key={item.id} item={item} index={index} />
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
+  )
+);
+
+DraggableList.displayName = "DraggableList";
 
 export default DraggableList;

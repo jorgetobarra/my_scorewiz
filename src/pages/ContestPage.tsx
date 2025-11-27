@@ -16,7 +16,7 @@ import { saveJSONAsFile } from '../services/fileManagementService';
 import {
   generateVotes, getContest, getParticipants, getVotes, removeContest,
 } from '../services/localStorageService';
-import Endpoints from '../utils/endpoints';
+import { Endpoints } from '../utils/endpoints';
 
 const useStyles = makeStyles(() => ({
   button: {
@@ -40,7 +40,7 @@ const styles = {
 };
 
 export default function ContestPage() {
-  const { contest: contestId } = useParams();
+  const { contest: contestId }: { contest: string } = useParams();
   const [participants, setParticipants] = useState(getParticipants(contestId));
   const history = useHistory();
 
@@ -60,12 +60,12 @@ export default function ContestPage() {
   const clickRemoveContest = () => {
     removeContest(contestId);
     history.goBack();
-    history.push(Endpoints.MENU);
+    history.push(Endpoints.MENU());
   };
   const classes = useStyles();
 
   return (
-    <Grid container name="layout" className="ContestPage" direction="column">
+    <Grid container className="ContestPage" direction="column">
       <Grid item xs key="title">
         <Header text={`Contest: ${contestId}`} />
       </Grid>
@@ -90,7 +90,7 @@ export default function ContestPage() {
           <Button color="error" onClick={clickRemoveContest} className={classes.button}>Delete contest</Button>
         </Grid>
         <Grid item xs={12} key="participantsSubHeader">
-          <Header text="Participants" textVariant="h7" />
+          <Header text="Participants" textVariant="h6" />
         </Grid>
         <Grid item xs={12} key="participantsList" justifyContent="space-between">
           <ParticipantsList participants={participants} setParticipants={setParticipants} />

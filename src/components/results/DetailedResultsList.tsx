@@ -1,20 +1,15 @@
-/* eslint-disable react/forbid-prop-types */
-/* eslint-disable no-unused-vars */
-import {
-  Fade,
-  Grid,
-  Typography,
-} from '@mui/material';
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import ResultsCard from './ResultsCard';
-import { Participant } from '../../types';
+import { Grid, Typography } from "@mui/material";
+import React from "react";
+import { Participant } from "../../types";
+import ResultsCard from "./ResultsCard";
 
 interface DetailedResultsListProps {
-  participants: Participant[];
+  participants?: Participant[];
 }
 
-export default function DetailedResultsList({ participants }: DetailedResultsListProps) {
+export default function DetailedResultsList({
+  participants = [],
+}: DetailedResultsListProps) {
   // const { contest: contestId } = useParams();
   // const [appear, setAppear] = useState([]);
   // const timeout = 0;
@@ -26,12 +21,15 @@ export default function DetailedResultsList({ participants }: DetailedResultsLis
   return (
     <Grid container className="DetailedResultsList" justifyContent="center">
       <Grid item xs key="detailedResultsList">
-        <Typography variant="h5" sx={{ textAlign: 'center' }}>List</Typography>
-        {participants.length > 0 && participants.map((participant, index) => (
-          // <Fade in timeout={1000} mountOnEnter unmountOnExit>
-          <ResultsCard participant={participant} />
-          // </Fade>
-        ))}
+        <Typography variant="h5" sx={{ textAlign: "center" }}>
+          List
+        </Typography>
+        {participants.length > 0 &&
+          participants.map((participant) => (
+            // <Fade in timeout={1000} mountOnEnter unmountOnExit>
+            <ResultsCard key={participant.id} participant={participant} />
+            // </Fade>
+          ))}
       </Grid>
     </Grid>
   );

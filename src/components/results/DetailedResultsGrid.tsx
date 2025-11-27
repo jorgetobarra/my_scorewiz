@@ -1,7 +1,5 @@
-/* eslint-disable react/forbid-prop-types */
-/* eslint-disable no-unused-vars */
+import styled from "@emotion/styled";
 import {
-  Fade,
   Grid,
   Paper,
   Table,
@@ -13,12 +11,9 @@ import {
   TableHead,
   TableRow,
   Typography,
-} from '@mui/material';
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import styled from '@emotion/styled';
-import { mapResultsToGrid } from '../../services/helpers';
-import { getContest } from '../../services/localStorageService';
+} from "@mui/material";
+import React from "react";
+import { useParams } from "react-router-dom";
 
 interface DetailedResultsGridProps {
   results: any[][];
@@ -26,9 +21,9 @@ interface DetailedResultsGridProps {
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: 'gray',
+    backgroundColor: "gray",
     // backgroundColor: theme.palette.primary.main,
-    color: 'white',
+    color: "white",
     // color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -37,17 +32,19 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': {
-    backgroundColor: 'lightgray',
+  "&:nth-of-type(odd)": {
+    backgroundColor: "lightgray",
     // backgroundColor: theme.palette.action.hover,
   },
   // hide last border
-  '&:last-child td, &:last-child th': {
+  "&:last-child td, &:last-child th": {
     border: 0,
   },
 }));
 
-export default function DetailedResultsGrid({ results }: DetailedResultsGridProps) {
+export default function DetailedResultsGrid({
+  results,
+}: DetailedResultsGridProps) {
   const { contest: contestId } = useParams<{ contest: string }>();
 
   return (
@@ -59,27 +56,31 @@ export default function DetailedResultsGrid({ results }: DetailedResultsGridProp
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
-              {results && results[0]?.map((row) => <StyledTableCell align="center">{row}</StyledTableCell>)}
+              {results &&
+                results[0]?.map((row, index) => (
+                  <StyledTableCell key={index} align="center">{row}</StyledTableCell>
+                ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {results?.map((r, i) => (
+            {results?.map((r, i) =>
               i > 0 ? (
-                <StyledTableRow
-                  key={r[0]}
-                >
-                  {r.map((ri) => (
-                    <TableCell align="center">
-                      {ri}
-                    </TableCell>
+                <StyledTableRow key={r[0]}>
+                  {r.map((ri, index) => (
+                    <TableCell key={index} align="center">{ri}</TableCell>
                   ))}
                 </StyledTableRow>
-              ) : ''
-            ))}
+              ) : (
+                ""
+              )
+            )}
           </TableBody>
           <TableFooter>
             <TableRow>
-              {results && results[0]?.map((row) => <TableCell align="center">{row}</TableCell>)}
+              {results &&
+                results[0]?.map((row, index) => (
+                  <TableCell key={index} align="center">{row}</TableCell>
+                ))}
             </TableRow>
           </TableFooter>
         </Table>
