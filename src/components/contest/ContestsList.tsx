@@ -14,7 +14,6 @@ export default function ContestsList() {
         justifyContent="left"
         direction="row"
       >
-        {/* {contests.length > 0 && contests.map((contest, index) => ( */}
         {contests?.map((contest, index) => (
           <ContestCard
             key={contest}

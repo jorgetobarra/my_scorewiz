@@ -1,5 +1,6 @@
 import { Contest, Participant, Vote } from "../types";
 import { mapResultsToGrid } from "./helpers";
+import { useSnackbarContext } from "../contexts/SnackbarContext";
 
 const CONTESTS_KEY = "contests";
 const CONTEST_KEY = (contest: string) => `${contest}:data`;
@@ -172,7 +173,20 @@ export function generateVotes(contestId: string): void {
   setContest(contest);
 }
 
-export function restoreContest(contest: Contest): void {
-  // TODO : validate contest format before
-  localStorage.setItem(contest.id, JSON.stringify(contest));
+export function restoreContest(contest: Contest): [boolean, string] {
+  if (!contest.id || !contest.name) {
+    return [false, "Invalid contest format"];
+  }
+
+  const contests = getContests();
+
+  if (contests.includes(contest.id)) {
+    return [false, `Contest "${contest.name}" already exists`];
+  }
+
+  contests.push(contest.id);
+  setContests(contests);
+
+  localStorage.setItem(CONTEST_KEY(contest.id), JSON.stringify(contest));
+  return [true, `Contest "${contest.name}" imported successfully`];
 }

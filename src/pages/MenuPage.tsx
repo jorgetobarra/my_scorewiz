@@ -1,9 +1,10 @@
 import { Button, Grid } from "@mui/material";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useLocation, useHistory } from "react-router-dom";
 import ContestsList from "../components/contest/ContestsList";
 import Header from "../components/utils/Header";
 import { Endpoints } from "../utils/endpoints";
+import ImportContest from "../components/contest/ImportContest";
 
 const styles = {
   buttonsGrid: {
@@ -17,6 +18,12 @@ const styles = {
 };
 
 export default function MenuPage() {
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const refresh = () => {
+    setRefreshKey((prev) => prev + 1); // TODO: This needs a context-based solution
+  };
+
   return (
     <Grid item xs className="layout">
       <Grid item xs key="contestsHeader">
@@ -37,9 +44,7 @@ export default function MenuPage() {
             Create new contest
           </Button>
         </Link>
-        <Button variant="outlined" sx={styles.buttons}>
-          Import backup
-        </Button>
+        <ImportContest onImportSuccess={() => refresh()} sx={styles.buttons} />
       </Grid>
     </Grid>
   );
