@@ -11,7 +11,7 @@ import { POINTS } from '../utils/constants';
 import { getParticipants, setVotes } from '../services/localStorageService';
 import AlertDialog from '../components/utils/AlertDialog';
 import Header from '../components/utils/Header';
-import GoBackContext from '../contexts/GoBackContext';
+import { useGoBackContext } from '../contexts/GoBackContext';
 import { Participant } from '../types/index';
 
 const styles = { // TODO: Use or set these
@@ -42,7 +42,7 @@ export default function VotingPage() {
     getParticipants(contestId).filter((p) => p.id !== participantId),
   );
   const [openAlert, setOpenAlert] = useState(false);
-  const { useGoBack } = useContext(GoBackContext);
+  const { setDisableBack } = useGoBackContext();
 
   const save = (parts: Participant[]) => {
     setVotes(contestId, participantId, parts.map((p, index) => ({
@@ -56,8 +56,8 @@ export default function VotingPage() {
   };
 
   useEffect(() => {
-    useGoBack().setDisableBack(true);
-    return () => useGoBack().setDisableBack(false);
+    setDisableBack(true);
+    return () => setDisableBack(false);
   }, []);
 
   return (

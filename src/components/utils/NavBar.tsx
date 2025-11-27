@@ -10,9 +10,9 @@ import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 import { useHistory, useLocation } from 'react-router-dom';
 import Endpoints from '../../utils/endpoints';
-import ColorModeContext from '../../contexts/ColorModeContext';
+import {useColorModeContext} from '../../contexts/ColorModeContext';
 import AlertDialog from './AlertDialog';
-import GoBackContext from '../../contexts/GoBackContext';
+import { useGoBackContext } from '../../contexts/GoBackContext';
 
 const appName = 'My Scorewiz';
 
@@ -25,7 +25,7 @@ function NavBar({ pageName }: NavBarProps): React.ReactElement {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const location = useLocation();
   const history = useHistory();
-  const { disableBack } = useContext(GoBackContext);
+  const { disableBack } = useGoBackContext();
   const onBackClick = () => {
     history.goBack();
   };
@@ -46,7 +46,7 @@ function NavBar({ pageName }: NavBarProps): React.ReactElement {
   };
 
   const theme = useTheme();
-  const {  } = React.useContext(ColorModeContext);
+  const { toggleColorMode } = useColorModeContext();
 
   return (
     <AppBar position="static">
@@ -83,11 +83,11 @@ function NavBar({ pageName }: NavBarProps): React.ReactElement {
             {' 🔸 '}
             {pageName}
           </Typography>
-          {/* <Button onClick={colorMode.toggleColorMode} style={{ color: 'white' }}>
+          <Button onClick={toggleColorMode} style={{ color: 'white' }}>
             Theme:
             {' '}
             {theme.palette.mode}
-          </Button> */}
+          </Button>
           <Box className="FlexBox" />
         </Toolbar>
       </Container>

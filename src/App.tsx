@@ -3,11 +3,11 @@ import React from 'react';
 import './App.css';
 import { HashRouter as Router } from 'react-router-dom';
 import Layout from './components/utils/Layout';
-import ColorModeContext from './contexts/ColorModeContext';
+import {useColorModeContext} from './contexts/ColorModeContext';
 import ContextsSetter from './contexts/ContextsSetter';
 
 function App(): React.ReactElement {
-  const { mode } = React.useContext(ColorModeContext);
+  const { mode } = useColorModeContext();
   const theme = React.useMemo(
     () => createTheme({
       palette: {

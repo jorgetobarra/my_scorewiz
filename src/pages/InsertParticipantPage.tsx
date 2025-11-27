@@ -8,15 +8,15 @@ import { useHistory, useParams } from 'react-router-dom';
 import ParticipantInput from '../components/participant/ParticipantInput';
 import InsertParticipantsList from '../components/participant/InsertParticipantsList';
 import { getParticipant, getParticipants, addParticipant } from '../services/localStorageService';
-import GoBackContext from '../contexts/GoBackContext';
 import AlertDialog from '../components/utils/AlertDialog';
+import { useGoBackContext } from '../contexts/GoBackContext';
 
 export default function InsertParticipantPage() {
   const { contest: contestId } = useParams();
   const history = useHistory();
   const [participants, setParticipants] = useState([]);
   const [openAlert, setOpenAlert] = useState(false);
-  const { useGoBack } = useContext(GoBackContext);
+  const { setDisableBack } = useGoBackContext();
 
   const submit = (input) => {
     if (input.length === 0) alert('Participant can\'t be empty');
@@ -33,8 +33,8 @@ export default function InsertParticipantPage() {
   };
 
   useEffect(() => {
-    useGoBack.setDisableBack(true);
-    return () => useGoBack.setDisableBack(false);
+    setDisableBack(true);
+    return () => setDisableBack(false);
   }, []);
 
   return (

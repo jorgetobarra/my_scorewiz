@@ -23,7 +23,8 @@ import ResultsCard from '../components/results/ResultsCard';
 import { getContest } from '../services/localStorageService';
 import Endpoints from '../utils/endpoints';
 import useWindowDimensions from '../utils/useWindowDimensions';
-import SnackbarContext from '../contexts/SnackbarContext';
+import { useSnackbarContext } from '../contexts/SnackbarContext';
+import { Contest } from '../types/index';
 
 const MAX_WIDTH = 1024;
 
@@ -42,14 +43,14 @@ let styles = {
 };
 
 export default function ResultsPage() {
-  const { contest: contestId } = useParams();
-  const [contest] = useState(getContest(contestId));
+  const { contest: contestId } = useParams<{ contest: string }>();
+  const [contest] = useState<Contest>(getContest(contestId));
   const [pastResults, setPastResults] = useState([]);
   const [mainResultStage, setMainResultStage] = useState(0);
   const [counter, setCounter] = useState(1);
   const [fullScreen, setFullScreen] = useState(false);
   const [maxWidth, setMaxWidth] = useState(MAX_WIDTH);
-  const { useSnackbar } = useContext(SnackbarContext);
+  const { openSnackbar } = useSnackbarContext();
 
   const hasNextParticipant = () => (counter <= contest.participants.length);
   const hasPreviousParticipant = () => (counter > 1);
@@ -65,7 +66,7 @@ export default function ResultsPage() {
         setMainResultStage(2);
       }
     } else {
-      useSnackbar.openSnackbar('Not fewer results');
+      openSnackbar('Not fewer results');
     }
   };
   const clickNext = () => {
@@ -77,7 +78,7 @@ export default function ResultsPage() {
         setMainResultStage(0);
       }
     } else {
-      useSnackbar.openSnackbar('Not more results');
+      openSnackbar('Not more results');
     }
   };
   const clickEnd = () => {

@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { Snackbar, Button } from '@mui/material';
-import SnackbarContext from '../../contexts/SnackbarContext';
+import { useSnackbarContext } from '../../contexts/SnackbarContext';
 
 export default function CustomSnackBar(): React.ReactElement {
-  const { text, opened, setOpenSnackbar } = useContext(SnackbarContext);
+  const { text, opened, closeSnackbar } = useSnackbarContext();
   return (
     <Snackbar
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
@@ -11,11 +11,11 @@ export default function CustomSnackBar(): React.ReactElement {
       autoHideDuration={3000}
       message={text}
       action={(
-        <Button color="inherit" size="small" onClick={() => setOpenSnackbar(false)}>
+        <Button color="inherit" size="small" onClick={closeSnackbar}>
           Close
         </Button>
             )}
-      onClose={() => setOpenSnackbar(false)}
+      onClose={closeSnackbar}
       key="snackbar"
     />
   );

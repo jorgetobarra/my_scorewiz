@@ -1,7 +1,7 @@
 import React from 'react';
-import ColorModeContext, { ToggleColorMode } from './ColorModeContext';
-import GoBackContext, { ToggleGoBack } from './GoBackContext';
-import SnackbarContext, { OpenSnackBar } from './SnackbarContext';
+import { SnackbarContextProvider } from './SnackbarContext';
+import { GoBackContextProvider } from './GoBackContext';
+import { ColorModeContextProvider } from './ColorModeContext';
 
 interface ContextsSetterProps {
   children: React.ReactNode;
@@ -9,12 +9,12 @@ interface ContextsSetterProps {
 
 export default function ContextsSetter({ children }: ContextsSetterProps): React.ReactElement {
   return (
-    <ColorModeContext.Provider value={ToggleColorMode()}>
-      <GoBackContext.Provider value={ToggleGoBack()}>
-        <SnackbarContext.Provider value={OpenSnackBar()}>
-          { children }
-        </SnackbarContext.Provider>
-      </GoBackContext.Provider>
-    </ColorModeContext.Provider>
+    <ColorModeContextProvider>
+      <GoBackContextProvider>
+        <SnackbarContextProvider>
+          {children}
+        </SnackbarContextProvider>
+      </GoBackContextProvider>
+    </ColorModeContextProvider>
   );
 }

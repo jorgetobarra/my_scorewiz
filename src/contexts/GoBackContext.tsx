@@ -2,32 +2,24 @@ import React from 'react';
 
 interface GoBackContextType {
   disableBack: boolean;
-  useGoBack: () => {
-    setDisableBack: React.Dispatch<React.SetStateAction<boolean>>;
-  };
+  setDisableBack: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default React.createContext<GoBackContextType>({
-  disableBack: false,
-  useGoBack: () => ({
-    setDisableBack: () => {}
-  }),
-});
+export const GoBackContext = React.createContext<GoBackContextType | undefined>(undefined);
 
-interface ToggleGoBackReturn {
-  disableBack: boolean;
-  useGoBack: {
-    setDisableBack: React.Dispatch<React.SetStateAction<boolean>>;
-  };
-}
 
-export function ToggleGoBack(): ToggleGoBackReturn {
+export function GoBackContextProvider({ children }: React.PropsWithChildren<{}>) {
   const [disableBack, setDisableBack] = React.useState<boolean>(false);
-  const useGoBack = React.useMemo(
-    () => ({
-      setDisableBack,
-    }),
-    [],
+  return (<GoBackContext.Provider value={{ disableBack, setDisableBack }}>
+    {children}
+  </GoBackContext.Provider>
   );
-  return { disableBack, useGoBack };
 }
+
+export const useGoBackContext = (): GoBackContextType => {
+  const context = React.useContext(GoBackContext);
+  if (context === undefined) {
+    throw new Error('useGoBackContext must be used within a GoBackContextProvider');
+  }
+  return context;
+};
