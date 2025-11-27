@@ -1,7 +1,7 @@
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
-import { Box, Button, Fade, Grid } from "@mui/material";
+import { Box, Button, Fade, Grid, Typography } from '@mui/material';
 import React, { useCallback, useEffect, useState } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
 import { TransitionGroup } from "react-transition-group";
@@ -39,13 +39,20 @@ export default function ResultsPage() {
   const [maxWidth, setMaxWidth] = useState<string>(MAX_WIDTH);
   const { openSnackbar } = useSnackbarContext();
   const history = useHistory();
-
+  
+  React.useEffect(() => {
+    if (!contest) {
+      openSnackbar(`Contest ${contestId} not found`);
+      history.goBack();
+    }
+  }, [contest]);
+  
   if (!contest?.participants?.length) {
-    history.goBack();
-    return <></>;
+    return null;
   }
-
+  
   const participants = contest.participants;
+  const winnerName = participants.length > 0 ? participants.filter(p => p.place === 1).map(p => p.name).join(' and ') : '';
 
   const hasNextParticipant = () => counter <= participants.length;
   const hasPreviousParticipant = () => counter > 1;
@@ -197,7 +204,7 @@ export default function ResultsPage() {
         )}
         {!hasNextParticipant() && hasPreviousParticipant() && (
           <>
-          {/* TODO: do this properly, this is just an idea */}
+            {/* TODO: do this properly, this is just an idea */}
             <Confetti
               onInit={({ confetti }) => {
                 confetti({
@@ -208,7 +215,7 @@ export default function ResultsPage() {
               }}
               style={{ position: "fixed", width: "100vw", height: "100vh" }}
             />
-            <p>congrats!</p>
+            <Typography variant="h3" align="center">Congratulations, {winnerName}!</Typography>
           </>
         )}
         <Box sx={{ height: useWindowDimensions().height / 12 }} />

@@ -17,15 +17,19 @@ interface LayoutProps {
 }
 
 function Layout({}: LayoutProps): React.ReactElement {
+  const classes = useStyle();
   const [pageName, setPageName] = useState<string>(
     sessionStorage.getItem("route") || ""
   );
   const location = useLocation();
 
   useEffect(() => {
-    setPageName(sessionStorage.getItem("route") || "");
-  }, [location]);
-  const classes = useStyle();
+    const currentRoute = sessionStorage.getItem("route");
+    if (currentRoute) {
+      setPageName(currentRoute || '');
+    }
+  }, [location.pathname]);
+
   return (
     <div>
       <CustomSnackBar />
@@ -33,7 +37,6 @@ function Layout({}: LayoutProps): React.ReactElement {
         <NavBar pageName={pageName} />
       </Grid>
       <Grid item xs={12} key="layout" className={classes.layout}>
-        {/* TODO: fix toolbar shadow and this style to sx and center */}
         {routes.map((route) => (
           <Route
             exact
@@ -41,7 +44,6 @@ function Layout({}: LayoutProps): React.ReactElement {
             key={route.path}
             render={() => {
               sessionStorage.setItem("route", route.name);
-              setPageName(route.name);
               return route.component;
             }}
           />

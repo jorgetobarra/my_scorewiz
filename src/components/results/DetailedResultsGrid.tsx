@@ -13,7 +13,6 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import { useParams } from "react-router-dom";
 
 interface DetailedResultsGridProps {
   results: any[][];
@@ -45,12 +44,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function DetailedResultsGrid({
   results,
 }: DetailedResultsGridProps) {
-  const { contest: contestId } = useParams<{ contest: string }>();
 
   return (
     <Grid container className="DetailedResultsGrid" justifyContent="center">
-      {/* {results.map((r) => <Typography>{JSON.stringify(r)}</Typography>)} */}
-      {/* <Typography>{JSON.stringify(results)}</Typography> */}
       <Typography variant="h5">Details</Typography>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
@@ -58,7 +54,7 @@ export default function DetailedResultsGrid({
             <TableRow>
               {results &&
                 results[0]?.map((row, index) => (
-                  <StyledTableCell key={index} align="center">{row}</StyledTableCell>
+                  <StyledTableCell key={'top' + index} align="center">{row}</StyledTableCell>
                 ))}
             </TableRow>
           </TableHead>
@@ -67,11 +63,11 @@ export default function DetailedResultsGrid({
               i > 0 ? (
                 <StyledTableRow key={r[0]}>
                   {r.map((ri, index) => (
-                    <TableCell key={index} align="center">{ri}</TableCell>
+                    <TableCell key={'row' + index} align="center">{ri}</TableCell>
                   ))}
                 </StyledTableRow>
               ) : (
-                ""
+                " "
               )
             )}
           </TableBody>
@@ -79,7 +75,7 @@ export default function DetailedResultsGrid({
             <TableRow>
               {results &&
                 results[0]?.map((row, index) => (
-                  <TableCell key={index} align="center">{row}</TableCell>
+                  <TableCell key={'bottom' + index} align="center">{row}</TableCell>
                 ))}
             </TableRow>
           </TableFooter>

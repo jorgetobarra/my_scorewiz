@@ -11,6 +11,7 @@ const styles = {
   grid: {
     paddingLeft: "1rem",
     paddingRight: "1rem",
+    maxWidth: "100%",
   },
   items: {
     padding: ".5rem",
@@ -38,7 +39,7 @@ export default function DetailedResultsPage() {
       <Grid
         item
         xs={12}
-        md={6}
+        xl={6}
         key="detailedResultsGrid"
         sx={{ ...styles.items, textAlign: "center" }}
       >
@@ -52,7 +53,7 @@ export default function DetailedResultsPage() {
           Download
         </Button>
       </Grid>
-      <Grid item xs={12} md={6} key="detailedResultsList" sx={styles.items}>
+      <Grid item xs={12} xl={6} key="detailedResultsList" sx={styles.items}>
         <DetailedResultsList participants={contest.participants} />
       </Grid>
     </Grid>

@@ -51,6 +51,7 @@ function ResultsCard({ participant, ...props }: ResultsCardProps, ref: React.Ref
             marginLeft: 24,
             marginRight: 8,
             backgroundColor: getPlaceColor(participant.place),
+            minWidth: "fit-content",
           }}
         >
           <CardContent
@@ -73,6 +74,7 @@ function ResultsCard({ participant, ...props }: ResultsCardProps, ref: React.Ref
             marginLeft: 8,
             marginRight: 8,
             backgroundColor: getLipsynchersColor(participant.place),
+            minWidth: "fit-content",
           }}
         >
           <CardContent
@@ -95,6 +97,7 @@ function ResultsCard({ participant, ...props }: ResultsCardProps, ref: React.Ref
             marginLeft: 8,
             marginRight: 24,
             backgroundColor: getLipsynchersColor(participant.place),
+            minWidth: "fit-content",
           }}
         >
           <CardContent

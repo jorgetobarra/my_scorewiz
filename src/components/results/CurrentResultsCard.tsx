@@ -38,7 +38,6 @@ export default function CurrentResultsCard({
   participant,
   stage,
 }: CurrentResultsCardProps) {
-  const { contest } = useParams<{ contest: string }>();
   return (
     <Grid
       container
