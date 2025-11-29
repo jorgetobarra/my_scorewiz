@@ -1,10 +1,11 @@
+import React from "react";
 import { Grid } from "@mui/material";
-import React, { useState } from "react";
-import { getContests } from "../../services/localStorageService";
+import { useContestContext } from "../../contexts/ContestContext";
 import ContestCard from "./ContestCard";
 
 export default function ContestsList() {
-  const [contests, setContests] = useState(getContests());
+  const { contests, removeContest } = useContestContext();
+
   return (
     <>
       <Grid
@@ -16,14 +17,13 @@ export default function ContestsList() {
       >
         {contests?.map((contest, index) => (
           <ContestCard
-            key={contest}
-            contest={contest}
+            key={contest.id}
+            contestId={contest.id}
             index={index}
-            setContests={setContests}
+            removeContest={removeContest}
           />
         ))}
       </Grid>
     </>
   );
 }
-ContestsList.propTypes = {};

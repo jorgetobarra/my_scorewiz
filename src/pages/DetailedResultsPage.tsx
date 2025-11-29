@@ -4,8 +4,8 @@ import { useParams } from "react-router-dom";
 import DetailedResultsGrid from "../components/results/DetailedResultsGrid";
 import DetailedResultsList from "../components/results/DetailedResultsList";
 import Header from "../components/utils/Header";
-import { getContest } from "../services/localStorageService";
 import XlsService from "../services/xlsService";
+import { useContestContext } from '../contexts/ContestContext';
 
 const styles = {
   grid: {
@@ -23,6 +23,7 @@ const styles = {
 
 export default function DetailedResultsPage() {
   const { contest: contestId }: { contest: string } = useParams();
+  const { getContest } = useContestContext();
   const [contest] = useState(getContest(contestId)!);
   const xlsService = new XlsService();
 

@@ -5,9 +5,9 @@ import AlertDialog from "../components/utils/AlertDialog";
 import Header from "../components/utils/Header";
 import DraggableList from "../components/voting/DraggableList";
 import { useGoBackContext } from "../contexts/GoBackContext";
-import { getParticipants, setVotes } from "../services/localStorageService";
 import { Participant } from "../types/index";
 import { POINTS } from "../utils/constants";
+import { useContestContext } from '../contexts/ContestContext';
 
 const styles = {
   // TODO: Use or set these
@@ -33,6 +33,7 @@ const styles = {
 
 export default function VotingPage() {
   const history = useHistory();
+  const { setVotes, getParticipants } = useContestContext();
   const { contest: contestId, participant: participantId } = useParams<{
     contest: string;
     participant: string;

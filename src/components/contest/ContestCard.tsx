@@ -1,3 +1,4 @@
+import React from "react";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import {
@@ -9,28 +10,26 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { getContests, removeContest } from "../../services/localStorageService";
 import { Endpoints } from "../../utils/endpoints";
 import AlertDialog from "../utils/AlertDialog";
 
 interface ContestCardProps {
-  contest: string;
+  contestId: string;
   index: number;
-  setContests: (contests: string[]) => void;
+  removeContest: (contestId: string) => void;
 }
 
 export default function ContestCard({
-  contest: contestId,
+  contestId,
   index,
-  setContests,
+  removeContest,
 }: ContestCardProps) {
   const history = useHistory();
   const [openAlert, setAlertOpen] = useState(false);
   const onDelete = () => {
     removeContest(contestId);
-    setContests(getContests());
   };
   return (
     <>

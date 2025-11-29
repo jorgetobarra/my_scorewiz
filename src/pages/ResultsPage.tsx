@@ -9,11 +9,11 @@ import CurrentResultsCard from "../components/results/CurrentResultsCard";
 import ResultsCard from "../components/results/ResultsCard";
 import Header from "../components/utils/Header";
 import { useSnackbarContext } from "../contexts/SnackbarContext";
-import { getContest } from "../services/localStorageService";
 import Confetti from "react-canvas-confetti";
 import { Contest, Participant } from "../types/index";
 import { Endpoints } from "../utils/endpoints";
 import useWindowDimensions from "../utils/useWindowDimensions";
+import { useContestContext } from '../contexts/ContestContext';
 
 const MAX_WIDTH = "1024px";
 
@@ -31,6 +31,7 @@ let styles = {
 
 export default function ResultsPage() {
   const { contest: contestId } = useParams<{ contest: string }>();
+  const { getContest } = useContestContext();
   const [contest] = useState<Contest | null>(getContest(contestId));
   const [pastResults, setPastResults] = useState<Participant[]>([]);
   const [mainResultStage, setMainResultStage] = useState(0);

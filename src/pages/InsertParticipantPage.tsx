@@ -6,11 +6,7 @@ import ParticipantInput from "../components/participant/ParticipantInput";
 import AlertDialog from "../components/utils/AlertDialog";
 import { useGoBackContext } from "../contexts/GoBackContext";
 import { Participant } from '../types/index';
-import {
-  addParticipant,
-  getParticipant,
-  getParticipants,
-} from "../services/localStorageService";
+import { useContestContext } from '../contexts/ContestContext';
 
 export default function InsertParticipantPage() {
   const { contest: contestId }: { contest: string } = useParams();
@@ -18,6 +14,7 @@ export default function InsertParticipantPage() {
   const [participants, setParticipants] = useState<Participant[]>([]);
   const [openAlert, setOpenAlert] = useState(false);
   const { setDisableBack } = useGoBackContext();
+  const { getParticipant, getParticipants, addParticipant } = useContestContext();
 
   const submit = (input: string) => {
     if (input.length === 0) alert("Participant can't be empty");

@@ -11,15 +11,10 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import {
-  getParticipants,
-  getVotes,
-  removeParticipant,
-  removeVotes,
-} from "../../services/localStorageService";
 import { Participant } from "../../types";
 import { Endpoints } from "../../utils/endpoints";
 import AlertDialog from "../utils/AlertDialog";
+import { useContestContext } from '../../contexts/ContestContext';
 
 interface ParticipantCardProps {
   participant: Participant;
@@ -39,6 +34,7 @@ export default function ParticipantCard({
   index,
 }: ParticipantCardProps) {
   const { contest: contestId } = useParams<any>();
+  const { getParticipants, getVotes, removeVotes, removeParticipant } = useContestContext();
   const [votes, setVotes] = useState(getVotes(contestId, participant.id));
   const [openVotesAlert, setVotesAlertOpen] = useState(false);
   const [openParticipantAlert, setParticipantAlertOpen] = useState(false);

@@ -39,11 +39,14 @@ export default function MenuPage() {
         justifyContent="center"
         sx={styles.buttonsGrid}
       >
-        <Link to={Endpoints.NEW_CONTEST()} className="NoLink">
-          <Button variant="contained" sx={styles.buttons}>
-            Create new contest
-          </Button>
-        </Link>
+        <Button
+          variant="contained"
+          sx={styles.buttons}
+          component={Link}
+          to={Endpoints.NEW_CONTEST()}
+        >
+          Create new contest
+        </Button>
         <ImportContest onImportSuccess={() => refresh()} sx={styles.buttons} />
       </Grid>
     </Grid>

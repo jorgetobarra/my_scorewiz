@@ -2,10 +2,11 @@ import { Grid } from "@mui/material";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import ContestInput from "../components/contest/ContestInput";
-import { getContest, addContest } from "../services/localStorageService";
+import { useContestContext } from '../contexts/ContestContext';
 
 export default function InsertContestPage() {
   const history = useHistory();
+  const { getContest, addContest } = useContestContext();
 
   const submit = (input: string) => {
     if (input.includes(",") || input.includes(":"))

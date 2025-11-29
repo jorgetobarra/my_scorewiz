@@ -13,10 +13,8 @@ import Header from '../components/utils/Header';
 import ParticipantsList from '../components/participant/ParticipantsList';
 import TooltipButton from '../components/utils/TooltipButton';
 import { saveJSONAsFile } from '../services/fileManagementService';
-import {
-  generateVotes, getContest, getParticipants, getVotes, removeContest,
-} from '../services/localStorageService';
 import { Endpoints } from '../utils/endpoints';
+import { useContestContext } from '../contexts/ContestContext';
 
 const useStyles = makeStyles(() => ({
   button: {
@@ -41,6 +39,7 @@ const styles = {
 
 export default function ContestPage() {
   const { contest: contestId }: { contest: string } = useParams();
+  const { getParticipants, getVotes, generateVotes, getContest, removeContest } = useContestContext();
   const [participants, setParticipants] = useState(getParticipants(contestId));
   const history = useHistory();
 

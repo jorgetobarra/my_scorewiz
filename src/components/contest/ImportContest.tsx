@@ -3,7 +3,7 @@ import UploadFileIcon from "@mui/icons-material/UploadFile";
 import React, { useRef } from "react";
 import { useSnackbarContext } from "../../contexts/SnackbarContext";
 import { Contest } from "../../types";
-import { restoreContest } from "../../services/localStorageService";
+import { useContestContext } from '../../contexts/ContestContext';
 
 interface ImportContestProps {
   onImportSuccess?: (contest: Contest) => void;
@@ -15,6 +15,7 @@ export default function ImportContest({
 }: ImportContestProps & ButtonProps): React.ReactElement {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { openSnackbar } = useSnackbarContext();
+  const { restoreContest } = useContestContext();
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -30,7 +31,7 @@ export default function ImportContest({
 
     const reader = new FileReader();
 
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
       try {
         const text = e.target?.result as string;
         const contest: Contest = JSON.parse(text);
@@ -40,7 +41,7 @@ export default function ImportContest({
           return;
         }
 
-        const [success, responseText] = restoreContest(contest);
+        const [success, responseText] = await restoreContest(contest);
         openSnackbar(responseText);
 
         if (success && onImportSuccess) {
