@@ -26,6 +26,7 @@ export default function InsertParticipantPage() {
       alert("Participant already exists");
     }
   };
+
   const save = () => {
     if (participants && participants.length > 0) {
       participants.forEach((p) => addParticipant(contestId, p));

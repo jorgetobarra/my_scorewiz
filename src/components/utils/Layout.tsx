@@ -51,7 +51,7 @@ function Layout({}: LayoutProps): React.ReactElement {
         <Redirect to={ROUTES.MENU} />
       </Grid>
       <Grid item xs={12} key="footer">
-        {/* TODO: add a footer here */}
+        {/* TODO: add a footer here? */}
       </Grid>
     </div>
   );

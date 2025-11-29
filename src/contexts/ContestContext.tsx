@@ -98,13 +98,13 @@ export function ContestContextProvider({
     const contest = getContest(contestId);
     if (!contest) return;
 
-    const updatedContests = contests.map((c) =>
-      c.id === contestId
-        ? { ...c, participants: [...(c.participants || []), participant] }
-        : c
+    setContests((prev) =>
+      prev.map((c) =>
+        c.id === contestId
+          ? { ...c, participants: [...(c.participants || []), participant] }
+          : c
+      )
     );
-
-    setContests(updatedContests);
 
     await ContestsRepository.saveContest(contest);
   };
@@ -204,14 +204,14 @@ export function ContestContextProvider({
     return contest?.participants?.find((p) => p.id === participantId)?.votes;
   };
 
-  const setVotes = async(
+  const setVotes = async (
     contestId: string,
     participantId: string,
     votes: Vote[] | undefined
   ): Promise<void> => {
     const contest = getContest(contestId);
     if (!contest || !contest.participants) return;
-    
+
     const updatedContest = { ...contest };
 
     const participant = updatedContest.participants!.find(

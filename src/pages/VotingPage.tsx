@@ -10,7 +10,6 @@ import { POINTS } from "../utils/constants";
 import { useContestContext } from '../contexts/ContestContext';
 
 const styles = {
-  // TODO: Use or set these
   grid: {
     maxWidth: 480,
   },
@@ -33,7 +32,7 @@ const styles = {
 
 export default function VotingPage() {
   const history = useHistory();
-  const { setVotes, getParticipants } = useContestContext();
+  const { setVotes, getParticipants, getParticipant } = useContestContext();
   const { contest: contestId, participant: participantId } = useParams<{
     contest: string;
     participant: string;
@@ -41,6 +40,7 @@ export default function VotingPage() {
   const [participants, setParticipants] = useState(
     getParticipants(contestId).filter((p) => p.id !== participantId)
   );
+  const votingParticipant = getParticipant(contestId, participantId);
   const [openAlert, setOpenAlert] = useState(false);
   const { setDisableBack } = useGoBackContext();
 
@@ -60,6 +60,21 @@ export default function VotingPage() {
   };
 
   useEffect(() => {
+    setParticipants(partps => {
+      if (!votingParticipant?.votes || votingParticipant.votes.length === 0) {
+        return partps;
+      }
+      
+      const voteOrder = votingParticipant.votes.map(v => v.participantId);
+      return [...partps].sort((a, b) => {
+      const indexA = voteOrder.indexOf(a.id);
+      const indexB = voteOrder.indexOf(b.id);
+      
+      if (indexA === -1) return 1;
+      if (indexB === -1) return -1;
+      return indexA - indexB;
+      });
+    });
     setDisableBack(true);
     return () => setDisableBack(false);
   }, []);

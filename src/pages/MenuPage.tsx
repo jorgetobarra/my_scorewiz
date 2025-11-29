@@ -21,7 +21,7 @@ export default function MenuPage() {
   const [refreshKey, setRefreshKey] = useState(0);
 
   const refresh = () => {
-    setRefreshKey((prev) => prev + 1); // TODO: This needs a context-based solution
+    setRefreshKey((prev) => prev + 1);
   };
 
   return (

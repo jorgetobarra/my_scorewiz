@@ -94,7 +94,6 @@ export default function ResultsPage() {
     setCounter(participants.length + 1);
     setMainResultStage(0);
   };
-  // TODO: hacer anuncio del top2 diferente
   const keydownFunction = useCallback(
     (event) => {
       if (event.keyCode === 32) {
@@ -199,9 +198,15 @@ export default function ResultsPage() {
           />
         )}
         {!hasPreviousParticipant() && mainResultStage === 0 && (
-          <Button variant="contained" size="large" onClick={() => clickNext()}>
-            Start
-          </Button>
+          <Box sx={{ width: '100%', textAlign: 'center'}}>
+            <Button
+              variant="contained"
+              size="large"
+              onClick={() => clickNext()}
+            >
+              Start
+            </Button>
+          </Box>
         )}
         {!hasNextParticipant() && hasPreviousParticipant() && (
           <>
@@ -216,7 +221,9 @@ export default function ResultsPage() {
               }}
               style={{ position: "fixed", width: "100vw", height: "100vh" }}
             />
-            <Typography variant="h3" align="center">Congratulations, {winnerName}!</Typography>
+            <Typography variant="h3" align="center">
+              Congratulations, {winnerName}!
+            </Typography>
           </>
         )}
         <Box sx={{ height: useWindowDimensions().height / 12 }} />

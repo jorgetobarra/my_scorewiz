@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation, Link } from 'react-router-dom';
 import { Endpoints } from '../../utils/endpoints';
 import { useColorModeContext } from '../../contexts/ColorModeContext';
 import AlertDialog from './AlertDialog';
@@ -67,8 +67,8 @@ function NavBar({ pageName }: NavBarProps): React.ReactElement {
           <Typography
             variant="h5"
             noWrap
-            component="a"
-            href="/"
+            component={Link}
+            to="/"
             sx={{
               mr: 2,
               // display: { xs: 'none', md: 'flex' },

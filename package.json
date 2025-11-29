@@ -1,6 +1,6 @@
 {
     "name": "my_score_wizard",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "private": true,
     "dependencies": {
         "@electron/remote": "^2.0.8",
@@ -101,6 +101,9 @@
         "mac": {
             "icon": "./public/icons/logoMacOS.icns",
             "category": "public.app-category.utilities",
+            "target": ["zip"]
+        },
+        "dmg": {
             "backgroundColor": "#DCDCDC",
             "title": "My Score Wizard DMG"
         },

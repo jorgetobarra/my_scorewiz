@@ -33,7 +33,7 @@ const styles = {
   },
 };
 
-// TODO: these are crazy, they don't respond properly to CSS
+// FIXME: these are crazy, they don't respond properly to CSS
 export default function CurrentResultsCard({
   participant,
   stage,

@@ -23,6 +23,13 @@ export async function getContest(contestId: string): Promise<Contest | null> {
 
 export async function saveContest(contest: Contest): Promise<boolean> {
   if (contest && contest.id) {
+    localStorage.setItem(
+      CONTESTS_KEY,
+      JSON.stringify([
+        ...(await getContests()).filter((c) => c.id !== contest.id),
+        contest,
+      ])
+    );
     localStorage.setItem(CONTEST_KEY(contest.id), JSON.stringify(contest));
     return true;
   }
@@ -33,8 +40,6 @@ export async function deleteContest(contestId: string): Promise<void> {
   localStorage.removeItem(CONTEST_KEY(contestId));
   localStorage.setItem(
     CONTESTS_KEY,
-    JSON.stringify(
-      (await getContests()).filter((c) => c.id !== contestId)
-    )
+    JSON.stringify((await getContests()).filter((c) => c.id !== contestId))
   );
 }
