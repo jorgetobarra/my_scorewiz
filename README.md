@@ -6,3 +6,19 @@ Built with React, Electron and MUI.
 Go to the package.json and execute the correspondent build command to generate an app for your OS. But don't forget the `npm i` before that!
 
 This project was built years ago to solve a necessity, so don't expect code excellency 😂 But it does work wonderfully.
+
+## Screenshots
+
+![Home page](screenshots/menu.png)
+
+![Contest view](screenshots/contest_view.png)
+
+![Voting screen](screenshots/voting.png)
+
+![Results view](screenshots/results.png)
+
+![Detailed results page](screenshots/detailed_results.png)
+
+## Live Demo
+
+[See on YouTube](https://www.youtube.com/watch?v=z2RZuYX6LQ8)

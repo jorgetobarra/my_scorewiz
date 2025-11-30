@@ -92,7 +92,8 @@
     "description": "App for creating the votes of your own contest",
     "build": {
         "extends": null,
-        "appId": "com.jologeapps.electron-my_scorewiz",
+        "appId": "com.jorgetobarra.electron-my_scorewiz",
+        "productName": "My Score Wizard",
         "directories": {
             "buildResources": "assets"
         },
